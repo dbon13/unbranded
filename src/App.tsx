@@ -91,7 +91,7 @@ export default function App() {
   const onLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!/^image\\/(png|jpeg|webp|svg\\+xml)$/.test(file.type)) { alert("Formato non supportato (usa PNG/JPG/WEBP)."); return; }
+    if (!/^image\/(png|jpeg|webp|svg\+xml)$/.test(file.type)) { alert("Formato non supportato (usa PNG/JPG/WEBP)."); return; }
     if (file.size > 5 * 1024 * 1024) { alert("File troppo grande (max 5MB)."); return; }
     const reader = new FileReader();
     reader.onload = () => set({ logoDataUrl: reader.result as string });
@@ -103,7 +103,7 @@ export default function App() {
   const onBodyImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!/^image\\/(png|jpeg|webp)$/.test(file.type)) { alert("Usa PNG/JPG/WEBP."); return; }
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type)) { alert("Usa PNG/JPG/WEBP."); return; }
     if (file.size > 6 * 1024 * 1024) { alert("Max 6MB."); return; }
     const reader = new FileReader();
     reader.onload = () => set({ bodyImageUrl: reader.result as string });
