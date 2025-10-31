@@ -24,3 +24,21 @@ npm run dev
 ## Note
 - Le dipendenze UI sono componenti leggeri locali, niente backend.
 - Se serve aggiungere salvataggio su DB/Sheets o esportazione PDF con bleed, apri una issue o scrivimi e lo integriamo.
+
+
+---
+
+## v1.1
+- Anteprima responsive
+- Pulsante Fullscreen (kiosk)
+- Esportazione con bleed (mm) e crocini
+- Stato persistente su localStorage
+- Template brand rapidi
+- Validazione file logo
+
+
+## v1.2
+- Sfondi eleganti (temi: linen, gradient, carbon)
+- Scelta forma flacone (cilindrico/squadrato/panciuto) e tappo (piatto/dosatore/flip-top)
+- Etichetta ancorata alla forma con offset fini in mm
+- Upload immagine sul corpo flacone con clip alla silhouette (posizione/scala/opacità)
