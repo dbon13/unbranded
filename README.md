@@ -42,3 +42,10 @@ npm run dev
 - Scelta forma flacone (cilindrico/squadrato/panciuto) e tappo (piatto/dosatore/flip-top)
 - Etichetta ancorata alla forma con offset fini in mm
 - Upload immagine sul corpo flacone con clip alla silhouette (posizione/scala/opacità)
+
+
+## v1.3
+- Rimosso il concetto di etichetta: personalizzazione direttamente sul flacone
+- Testi liberi multilayer (posizione, rotazione, size, font, colore, opacità, tracking)
+- Immagine sul flacone clippata alla silhouette con pos/scala/opacità
+- Tappi ridimensionati e centrati; forme flacone più realistiche
