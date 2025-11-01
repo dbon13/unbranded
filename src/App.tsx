@@ -151,14 +151,17 @@ export default function App() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
+                  
                   <Input type="file" accept="image/*" onChange={(e:any)=>{
                     const file = e.target.files?.[0]; if (!file) return;
-                    if (!/^image\\/(png|jpeg|webp)$/.test(file.type)) { alert("Usa PNG/JPG/WEBP."); return; }
+                    const okTypes = ['image/png','image/jpeg','image/webp'];
+                    if (!okTypes.includes(file.type)) { alert("Usa PNG/JPG/WEBP."); return; }
                     if (file.size > 12 * 1024 * 1024) { alert("Max 12MB."); return; }
                     const reader = new FileReader();
                     reader.onload = () => set({ bodyImageUrl: reader.result as string });
                     reader.readAsDataURL(file);
                   }} />
+
                   <Button type="button" variant="secondary" onClick={()=>set({ bodyImageUrl: null })}>Rimuovi</Button>
                 </div>
                 <div className="grid grid-cols-3 gap-4 items-center">
