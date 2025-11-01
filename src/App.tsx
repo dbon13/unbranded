@@ -69,7 +69,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full p-6" style={{ backgroundImage: themes[theme] }}>
       <div className="max-w-6xl mx-auto mb-4 flex justify-center">
-        <img src="/logo-unbranded.png" alt="Unbranded" className="h-8 object-contain" />
+        <img src="/logo-unbranded.png" alt="Unbranded" className="h-16 md:h-20 object-contain" />
       </div>
 
       <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -79,17 +79,11 @@ export default function App() {
             <Button onClick={()=>document.documentElement.requestFullscreen?.()} variant="secondary" className="gap-2"><Maximize2 className="h-4 w-4"/>Kiosk</Button>
           </CardHeader>
           <CardContent>
-            <div className="w-full flex items-center justify-center">
-              <svg viewBox={s.vb} className="w-80 drop-shadow-xl">
+            <div className="w-full flex items-center justify-center overflow-visible">
+              <svg viewBox={s.vb} className="w-96 max-h-[78vh] overflow-visible">
                 <defs>
-                  <linearGradient id="shine" x1="0" x2="1">
-                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35"/>
-                    <stop offset="30%" stopColor="#ffffff" stopOpacity="0.05"/>
-                    <stop offset="100%" stopColor="#000000" stopOpacity="0.06"/>
-                  </linearGradient>
                   <clipPath id="bottleClip"><path d={s.bodyPath} /></clipPath>
                 </defs>
-                <ellipse cx="160" cy="540" rx="95" ry="10" fill="#000" opacity="0.08" />
                 <path d={s.bodyPath} fill={bottleColor} stroke="#00000010" strokeWidth="2" />
                 {bodyImageUrl && (
                   bodyImageFit === "cover" ? (
@@ -98,7 +92,6 @@ export default function App() {
                     <image href={bodyImageUrl} x={s.printableRect.x + bodyImageX} y={s.printableRect.y + bodyImageY} width={s.printableRect.w * bodyImageScale} height={s.printableRect.h * bodyImageScale} opacity={bodyImageOpacity} clipPath="url(#bottleClip)" preserveAspectRatio="xMidYMid meet" />
                   )
                 )}
-                <path d="M110 120 v300 c0 40 18 60 44 60" fill="none" stroke="url(#shine)" strokeWidth="10" />
                 {textLayers.map(t => (
                   <g key={t.id} transform={`rotate(${t.rotation}, ${t.x}, ${t.y})`} opacity={t.opacity} clipPath="url(#bottleClip)">
                     <text x={t.x} y={t.y} textAnchor="middle" fontFamily={t.font} fontWeight={t.weight} fontSize={t.size} fill={t.color} style={{letterSpacing: `${t.tracking}px`}}>{t.text}</text>
@@ -180,40 +173,43 @@ export default function App() {
                 </div>
                 {textLayers.length === 0 && <div className="text-sm text-slate-500">Nessun testo: usa “Aggiungi testo”.</div>}
                 {textLayers.map(t => (
-                  <div key={t.id} className={"rounded-xl border p-3 "+(t.id===activeTextId?"border-slate-800":"")}>
-                    <div className="flex items-center justify-between">
-                      <button className="text-sm font-semibold" onClick={()=>set({ activeTextId: t.id })}>{t.text || "Testo"}</button>
-                      <Button variant="ghost" onClick={()=>set({ textLayers: textLayers.filter(x=>x.id!==t.id), activeTextId: textLayers.filter(x=>x.id!==t.id)[0]?.id || "" })} className="text-red-600"> <Trash2 className="h-4 w-4"/> Rimuovi</Button>
+                  <div key={t.id} className="rounded-xl border p-3 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <Input value={t.text} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, text:e.target.value}:x) })} className="flex-1"/>
+                      <Button variant="ghost" onClick={()=>set({ textLayers: textLayers.filter(x=>x.id!==t.id) })} className="text-red-600"><Trash2 className="h-4 w-4"/>Rimuovi</Button>
                     </div>
-                    {activeTextId===t.id && (
-                      <div className="mt-3 grid grid-cols-2 gap-4">
-                        <div>
-                          <Label>Font</Label>
-                          <select value={t.font} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, font:e.target.value}:x) })} className="h-10 px-3 rounded-xl border w-full">
-                            {["Inter","Poppins","Montserrat","Playfair Display","Bebas Neue","Roboto Condensed"].map(f=> <option key={f} value={f}>{f}</option>)}
-                          </select>
-                        </div>
-                        <div>
-                          <Label>Colore</Label>
-                          <div className="flex items-center gap-2">
-                            <input type="color" value={t.color} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, color:e.target.value}:x) })} className="h-10 w-16 rounded-lg border" />
-                            <Input value={t.color} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, color:e.target.value}:x) })} />
-                          </div>
-                        </div>
-                        <div><Label>Dimensione</Label><Slider value={[t.size]} min={12} max={120} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, size:v[0]}:x) })} /></div>
-                        <div><Label>Peso</Label><Slider value={[t.weight]} min={300} max={900} step={100} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, weight:v[0]}:x) })} /></div>
-                        <div className="col-span-2 grid grid-cols-3 gap-4">
-                          <div><Label>X</Label><Slider value={[t.x]} min={0} max={320} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, x:v[0]}:x) })} /></div>
-                          <div><Label>Y</Label><Slider value={[t.y]} min={0} max={560} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, y:v[0]}:x) })} /></div>
-                          <div><Label>Rotazione</Label><Slider value={[t.rotation]} min={-90} max={90} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, rotation:v[0]}:x) })} /></div>
-                        </div>
-                        <div><Label>Tracking</Label><Slider value={[t.tracking]} min={-2} max={8} step={0.1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, tracking:v[0]}:x) })} /></div>
-                        <div><Label>Opacità</Label><Slider value={[t.opacity]} min={0.1} max={1} step={0.05} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, opacity:v[0]}:x) })} /></div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Font</Label>
+                        <select value={t.font} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, font:e.target.value}:x) })} className="h-10 px-3 rounded-xl border w-full">
+                          {["Inter","Poppins","Montserrat","Playfair Display","Bebas Neue","Roboto Condensed"].map(f=> <option key={f} value={f}>{f}</option>)}
+                        </select>
                       </div>
-                    )}
+                      <div>
+                        <Label>Colore</Label>
+                        <div className="flex items-center gap-2">
+                          <input type="color" value={t.color} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, color:e.target.value}:x) })} className="h-10 w-16 rounded-lg border" />
+                          <Input value={t.color} onChange={(e)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, color:e.target.value}:x) })} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div><Label>Dimensione</Label><Slider value={[t.size]} min={12} max={120} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, size:v[0]}:x) })} /></div>
+                      <div><Label>Peso</Label><Slider value={[t.weight]} min={300} max={900} step={100} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, weight:v[0]}:x) })} /></div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div><Label>X</Label><Slider value={[t.x]} min={0} max={320} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, x:v[0]}:x) })} /></div>
+                      <div><Label>Y</Label><Slider value={[t.y]} min={0} max={560} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, y:v[0]}:x) })} /></div>
+                      <div><Label>Rotazione</Label><Slider value={[t.rotation]} min={-90} max={90} step={1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, rotation:v[0]}:x) })} /></div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div><Label>Tracking</Label><Slider value={[t.tracking]} min={-2} max={8} step={0.1} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, tracking:v[0]}:x) })} /></div>
+                      <div><Label>Opacità</Label><Slider value={[t.opacity]} min={0.1} max={1} step={0.05} onChange={(v:any)=>set({ textLayers: textLayers.map(x=>x.id===t.id?{...x, opacity:v[0]}:x) })} /></div>
+                    </div>
                   </div>
                 ))}
               </div>
+
 
               <div className="flex gap-3 pt-2">
                 <Button variant="secondary" onClick={()=>{
