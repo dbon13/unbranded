@@ -38,10 +38,10 @@ export default function App() {
   };
 
   const [state, setState] = useState(() => {
-    try { const s = localStorage.getItem("unbranded-kiosk-v14"); return s ? JSON.parse(s) : defaultState; } catch { return defaultState; }
+    try { const s = localStorage.getItem("unbranded-kiosk-v141"); return s ? JSON.parse(s) : defaultState; } catch { return defaultState; }
   });
   const set = (patch: Partial<typeof state>) => setState((s:any)=> ({...s, ...patch}));
-  useEffect(()=>{ try{ localStorage.setItem("unbranded-kiosk-v14", JSON.stringify(state)); }catch{} }, [state]);
+  useEffect(()=>{ try{ localStorage.setItem("unbranded-kiosk-v141", JSON.stringify(state)); }catch{} }, [state]);
 
   const { theme, bottleShape, bottleColor, bodyImageUrl, bodyImageScale, bodyImageX, bodyImageY, bodyImageOpacity, bodyImageFit, textLayers, activeTextId, font } = state;
 
@@ -218,7 +218,7 @@ export default function App() {
                   const pick = ()=>palette[Math.floor(Math.random()*palette.length)];
                   set({ bottleColor: pick() });
                 }} className="gap-2"><RefreshCw className="h-4 w-4"/>Sorprendimi</Button>
-                <Button variant="ghost" onClick={()=>{ try{ localStorage.removeItem('unbranded-kiosk-v14'); }catch{}; location.reload(); }} className="gap-2"><Eraser className="h-4 w-4"/>Reset</Button>
+                <Button variant="ghost" onClick={()=>{ try{ localStorage.removeItem('unbranded-kiosk-v141'); }catch{}; location.reload(); }} className="gap-2"><Eraser className="h-4 w-4"/>Reset</Button>
               </div>
             </div>
           </CardContent>
