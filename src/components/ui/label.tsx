@@ -1,5 +1,7 @@
 
-import React from 'react'
-export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={'text-sm text-slate-700 ' + (className || '')} {...props} />
+import * as React from 'react'
+import { clsx } from 'clsx'
+export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>){
+  return <label className={clsx('block text-sm font-medium text-slate-700', className)} {...props} />
 }
+export default Label

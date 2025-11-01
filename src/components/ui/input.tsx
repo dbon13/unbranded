@@ -1,6 +1,7 @@
 
-import React from 'react'
-import { cn } from '@/lib/utils'
-export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input className={cn('h-10 px-3 rounded-xl border w-full outline-none focus:ring-2 ring-slate-300', className)} {...props} />
+import * as React from 'react'
+import { clsx } from 'clsx'
+export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>){
+  return <input className={clsx('h-10 rounded-xl border px-3 text-sm', className)} {...props} />
 }
+export default Input
